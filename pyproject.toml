@@ -3,4 +3,31 @@ name = "simulators-almanac"
 version = "0.1.0"
 description = "Farming Simulator 2025 save reading tool to help you make informed decisions about your farm"
 requires-python = ">=3.14"
-dependencies = ["pyqt6", "defusedxml"]
+dependencies = [
+    "pyqt6",
+    "defusedxml",
+    "pydantic-xml",
+    "black>=25.11.0",
+]
+
+[tool.ruff]
+ignore-init-module-imports = true
+line-length = 120
+
+[tool.ruff.format]
+preview = true
+quote-style = "preserve"
+
+[tool.ruff.lint]
+select = [
+    "B",
+    "DTZ",
+    "E",
+    "F",
+    "I",
+    "PTH",
+    "S",
+    "SIM",
+    "TID251",
+    "UP",
+]
