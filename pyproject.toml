@@ -1,0 +1,6 @@
+[project]
+name = "simulators-almanac"
+version = "0.1.0"
+description = "Farming Simulator 2025 save reading tool to help you make informed decisions about your farm"
+requires-python = ">=3.14"
+dependencies = ["pyqt6", "defusedxml"]
