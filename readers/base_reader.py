@@ -27,7 +27,7 @@ class BaseReader:
             return model.from_xml_tree(ele)
         except ValidationError as e:
             fld_id = ele.get("id", "UNKNOWN")
-            log.warning(f"Failed to parse field with ID {fld_id} with error: {e}")
+            log.warning(f"Failed to parse field with ID {fld_id} with errors: {e.errors()}")
 
 
 class ConfiguredXmlModel(BaseXmlModel):

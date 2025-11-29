@@ -100,6 +100,7 @@ class PathBrowser(QWidget):
                 path_valid = True
                 self._path = path
         self.load_button.setEnabled(path_valid)
+        self.save_settings()
 
     @property
     def path(self) -> Path:

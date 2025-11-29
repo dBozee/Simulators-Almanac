@@ -163,7 +163,7 @@ class Farm(ConfiguredXmlModel, tag="farm"):
     players: Annotated[Players, element()]
     statistics: Annotated[Statistics, element()]
     finances: Annotated[Finances, element()]
-    npc_jobs: Annotated[NpcJobs, element()]
+    npc_jobs: Annotated[NpcJobs | None, element(default=None)]
 
 
 class Farms(ConfiguredXmlModel, tag="farms"):

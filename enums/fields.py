@@ -19,7 +19,14 @@ class FruitType(StrEnum):
     GRASS = "GRASS"
     SORGHUM = "SORGHUM"
     POTATO = "POTATO"
-    # TODO: Add all crop types
+    CANOLA = "CANOLA"
+    BARLEY = "BARLEY"
+    GREENBEAN = "GREENBEAN"
+    OILSEEDRADISH = "OILSEEDRADISH"
+    OLIVE = "OLIVE"
+    POPLAR = "POPLAR"
+    SUGARCANE = "SUGARCANE"
+    WEED = "WEED"
 
 
 @unique
@@ -29,6 +36,7 @@ class GroundType(StrEnum):
     PLOWED = "PLOWED"
     GRASS = "GRASS"
     CULTIVATED = "CULTIVATED"
+    HARVEST_READY_OTHER = "HARVEST_READY_OTHER"
 
 
 @unique
