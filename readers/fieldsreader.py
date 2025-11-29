@@ -9,7 +9,7 @@ from enums import FruitType, GroundType, SprayType
 from .base_reader import BaseReader
 
 
-class Fields(BaseReader):
+class FieldsReader(BaseReader):
     def __init__(self, path: Path, owner_id: str = "1"):
         path = path / "fields.xml"
         super().__init__(path)

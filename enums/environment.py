@@ -13,7 +13,7 @@ class Season(StrEnum):
     WINTER = "WINTER"
     SUMMER = "SUMMER"
     SPRING = "SPRING"
-    FALL = "FALL"
+    AUTUMN = "AUTUMN"
 
 
 class Month(IntEnum):

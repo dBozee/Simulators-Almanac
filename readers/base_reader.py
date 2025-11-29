@@ -13,6 +13,8 @@ class BaseReader:
 
 class ConfiguredXmlModel(BaseXmlModel):
     class Config:
+        extra = "allow"
+
         @staticmethod
         def to_camel(field_name: str) -> str:
             words = field_name.split("_")
