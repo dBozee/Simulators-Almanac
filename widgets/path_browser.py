@@ -22,7 +22,7 @@ class PathBrowser(QWidget):
     Widget for loading and/or selecting the path to the save
     """
 
-    load_request = pyqtSignal(Path)
+    load_request = pyqtSignal(AllReaders)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -31,7 +31,9 @@ class PathBrowser(QWidget):
         self._path: Path = Path.home()
         self.layout = QGridLayout()
         self.file_line = QLineEdit()
+        self.farm_id_line = QLineEdit()
         self.load_button: QPushButton | None = None
+        self.data: AllReaders | None = None
 
         self.setLayout(self.layout)
         self.layout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
@@ -49,18 +51,22 @@ class PathBrowser(QWidget):
 
     def _build_ui(self):
         self.file_line.setPlaceholderText("/Path/To/Save")  # default. Should be overridden after first run
+        self.farm_id_line.setText("1")
+        self.farm_id_line.setFixedWidth(35)
 
         browse_button = QPushButton("Browse")
         browse_button.clicked.connect(self._browse_clicked)
 
         self.load_button = QPushButton("Load")
         self.load_button.setEnabled(False)
-        self.load_button.clicked.connect(self._build_readers)
+        self.load_button.clicked.connect(self._update_readers)
 
         self.layout.addWidget(QLabel("Save Path:"), 0, 0)
         self.layout.addWidget(self.file_line, 0, 1)
-        self.layout.addWidget(browse_button, 0, 2)
-        self.layout.addWidget(self.load_button, 0, 3)
+        self.layout.addWidget(QLabel("Farm ID:"), 0, 2)
+        self.layout.addWidget(self.farm_id_line, 0, 3)
+        self.layout.addWidget(browse_button, 0, 4)
+        self.layout.addWidget(self.load_button, 0, 5)
 
         splitter = QFrame()
         splitter.setFrameShape(QFrame.Shape.HLine)
@@ -80,8 +86,9 @@ class PathBrowser(QWidget):
             self._path = Path(directory)
             self.file_line.setText(directory)
 
-    def _build_readers(self):
-        return AllReaders(self.path)
+    def _update_readers(self):
+        self.data = AllReaders(self.path)
+        self.load_request.emit(self.data)
 
     def _validate_path_and_enable_button(self, path: str) -> None:
         path_valid: bool = False

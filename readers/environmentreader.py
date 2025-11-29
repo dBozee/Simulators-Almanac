@@ -1,25 +1,21 @@
+from logging import getLogger
 from pathlib import Path
 from typing import Annotated
 
-from pydantic import ValidationError
 from pydantic_xml import attr, element
 
 from enums import Season, WeatherType
 
 from .base_reader import BaseReader, ConfiguredXmlModel
 
+log = getLogger(__name__)
+
 
 class EnvironmentReader(BaseReader):
     def __init__(self, path: Path):
         path = path / "environment.xml"
         super().__init__(path)
-        self.environment: Environment | None
-
-        try:
-            self.environment = Environment.from_xml_tree(self.doc.getroot())
-        except ValidationError as e:
-            print(f"Failed to load Environment from {self.path} with error: {e}")
-            self.environment = None
+        self.environment: Environment | None = self._parse_one(Environment, self.doc.getroot())
 
 
 class SnowRoot(ConfiguredXmlModel, tag="snow"):

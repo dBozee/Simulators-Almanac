@@ -1,7 +1,13 @@
+from functools import cached_property
+from logging import getLogger
+
 from .base_reader import BaseReader
 from .environmentreader import Environment, EnvironmentReader
 from .farmlandreader import Farmland, FarmlandReader
+from .farms import FarmsReader
 from .fieldsreader import FarmField, FieldsReader
+
+log = getLogger(__name__)
 
 
 class AllReaders:
@@ -11,20 +17,28 @@ class AllReaders:
         self._fields_reader: FieldsReader | None = self._model_factory(FieldsReader)
         self._environment_reader: EnvironmentReader | None = self._model_factory(EnvironmentReader)
         self._farmland_reader: FarmlandReader | None = self._model_factory(FarmlandReader)
+        self._farms_reader: FarmsReader | None = self._model_factory(FarmsReader)
 
-    @property
+    @cached_property
     def fields(self) -> list[FarmField]:
         return self._fields_reader.all_fields if self._fields_reader else []
 
-    @property
+    @cached_property
+    def owned_fields(self) -> list[FarmField]:
+        if not (all_fields := self.fields):
+            return []
+        owned_farm_ids = [farm.id for farm in self.owned_farmlands]
+        return [field for field in all_fields if field.id in owned_farm_ids]
+
+    @cached_property
     def environment(self) -> Environment | None:
         return self._environment_reader.environment if self._environment_reader else None
 
-    @property
+    @cached_property
     def farmlands(self) -> list[Farmland]:
         return self._farmland_reader.farmlands if self._farmland_reader else []
 
-    @property
+    @cached_property
     def owned_farmlands(self):
         return self._farmland_reader.owned_farmlands(self.farm_id) if self._farmland_reader else []
 
@@ -32,5 +46,5 @@ class AllReaders:
         try:
             return model(path=self.path)
         except Exception as e:
-            print(f"Failed to instantiate {model.__name__} with error: {e}")
+            log.warning(f"Failed to instantiate {model.__name__} with error: {e}")
             return None
