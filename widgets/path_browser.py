@@ -39,12 +39,26 @@ class PathBrowser(QWidget):
         self.layout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
 
         self._build_ui()
-        self._restore_settings()
 
     def _restore_settings(self):
         if last_path := self.settings.value(SETTINGS_KEY_SAVE_PATH, ""):
             self.file_line.setText(last_path)
-            self.load_button.click()
+
+    def startup_load(self):
+        if last_path := self.settings.value(SETTINGS_KEY_SAVE_PATH, ""):
+            self.file_line.setText(last_path)
+            self._execute_startup_load(last_path)
+
+    def _execute_startup_load(self, last_path: str) -> None:
+        if not last_path.strip():
+            return
+        path = Path(last_path)
+
+        if path.exists():
+            self._path = path
+            self.load_button.setEnabled(True)
+            self.save_settings()
+            self._update_readers()
 
     def save_settings(self):
         self.settings.setValue(SETTINGS_KEY_SAVE_PATH, self.file_line.text())

@@ -4,7 +4,7 @@ from typing import TypeVar
 from xml.etree.ElementTree import Element, ElementTree
 
 from defusedxml.ElementTree import parse
-from pydantic import ValidationError
+from pydantic import ValidationError, field_validator
 from pydantic_xml import BaseXmlModel
 
 T = TypeVar("T", bound="ConfiguredXmlModel")
@@ -26,8 +26,7 @@ class BaseReader:
         try:
             return model.from_xml_tree(ele)
         except ValidationError as e:
-            fld_id = ele.get("id", "UNKNOWN")
-            log.warning(f"Failed to parse field with ID {fld_id} with errors: {e.errors()}")
+            log.warning(f"Failed to parse model {model.__name__} with errors: {e.errors()}")
 
 
 class ConfiguredXmlModel(BaseXmlModel):
@@ -40,3 +39,16 @@ class ConfiguredXmlModel(BaseXmlModel):
             return words[0] + "".join(word.title() for word in words[1:])
 
         alias_generator = to_camel
+
+    @field_validator('*', mode='before')
+    @classmethod
+    def floats_to_ints(cls, value):
+        if value is None:
+            return None
+        if not isinstance(value, float):
+            return value
+        try:
+            float_val = float(value)
+            return int(round(float_val))
+        except (ValueError, TypeError):
+            return value

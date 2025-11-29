@@ -27,6 +27,14 @@ class FruitType(StrEnum):
     POPLAR = "POPLAR"
     SUGARCANE = "SUGARCANE"
     WEED = "WEED"
+    ALFALFA = "ALFALFA"
+    SPELT = "SPELT"
+    CLOVER = "CLOVER"
+    RYE = "RYE"
+    TRITICALE = "TRITICALE"
+    FLAX = "FLAX"
+    BUCKWHEAT = "BUCKWHEAT"
+    MUSTARD = "MUSTARD"
 
 
 @unique
@@ -37,6 +45,9 @@ class GroundType(StrEnum):
     GRASS = "GRASS"
     CULTIVATED = "CULTIVATED"
     HARVEST_READY_OTHER = "HARVEST_READY_OTHER"
+    RIDGE_SOWN = "RIDGE_SOWN"
+    PLANTED = "PLANTED"
+    RIDGE = "RIDGE"
 
 
 @unique
@@ -45,3 +56,5 @@ class SprayType(StrEnum):
     MANURE = "MANURE"
     LIQUID_MANURE = "LIQUID_MANURE"
     LIQUID_FERTILIZER = "LIQUID_FERTILIZER"
+    FERTILIZER = "FERTILIZER"
+    LIME = "LIME"

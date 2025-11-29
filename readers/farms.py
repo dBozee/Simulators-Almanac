@@ -139,6 +139,48 @@ class DayStats(ConfiguredXmlModel, tag="stats"):
     other: Annotated[float, element()]
     loan_interest: Annotated[float, element()]
 
+    @property
+    def total_earned(self):
+        return (
+            self.property_income
+            + self.sold_wood
+            + self.sold_bales
+            + self.sold_wool
+            + self.sold_milk
+            + self.sold_products
+            + self.harvest_income
+            + self.mission_income
+            + self.sold_vehicles
+            + self.sold_handtools
+            + self.sold_animals
+            + self.sold_buildings
+            + self.field_selling
+        )
+
+    @property
+    def total_spent(self):
+        return (
+            self.new_vehicles_cost
+            + self.new_handtools_cost
+            + self.new_animals_cost
+            + self.construction_cost
+            + self.field_purchase
+            + self.vehicle_running_cost
+            + self.vehicle_leasing_cost
+            + self.property_maintenance
+            + self.production_costs
+            + self.purchase_fuel
+            + self.purchase_seeds
+            + self.purchase_fertilizer
+            + self.purchase_saplings
+            + self.purchase_water
+            + self.purchase_bales
+            + self.purchase_pallets
+            + self.wage_payment
+            + self.other
+            + self.loan_interest
+        )
+
 
 class Finances(ConfiguredXmlModel, tag="finances"):
     stats: Annotated[list[DayStats], element(tag="stats")]

@@ -42,6 +42,7 @@ class MainWindow(QMainWindow):
         # Path browser top bar
         self.path_browser = PathBrowser(container_widget)
         self.path_browser.load_request.connect(self._handle_data_load)
+        self.path_browser.startup_load()
         main_v_layout.addWidget(self.path_browser)
 
         # navbar + stacked pages
@@ -80,6 +81,7 @@ class MainWindow(QMainWindow):
 
         for page_name in PAGE_MAP:
             button = NavbarButton(page_name, self._show_page)
+            button.setEnabled(self.readers is not None)
             nav_v_layout.addWidget(button)
 
         main_layout.addLayout(nav_v_layout)

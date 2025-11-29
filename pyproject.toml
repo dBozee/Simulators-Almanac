@@ -8,6 +8,7 @@ dependencies = [
     "defusedxml",
     "pydantic-xml",
     "black>=25.11.0",
+    "pyqtgraph",
 ]
 
 [tool.ruff]

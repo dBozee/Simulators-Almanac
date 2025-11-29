@@ -2,10 +2,10 @@ from functools import cached_property
 from logging import getLogger
 
 from .base_reader import BaseReader
-from .environmentreader import Environment, EnvironmentReader
-from .farmlandreader import Farmland, FarmlandReader
-from .farms import FarmsReader
-from .fieldsreader import FarmField, FieldsReader
+from .environment import Environment, EnvironmentReader
+from .farmland import Farmland, FarmlandReader
+from .farms import Farm, FarmsReader
+from .fields import FarmField, FieldsReader
 
 log = getLogger(__name__)
 
@@ -41,6 +41,17 @@ class AllReaders:
     @cached_property
     def owned_farmlands(self):
         return self._farmland_reader.owned_farmlands(self.farm_id) if self._farmland_reader else []
+
+    @cached_property
+    def farms(self) -> list[Farm]:
+        return self._farms_reader.farms if self._farms_reader else []
+
+    @cached_property
+    def my_farm(self) -> Farm | None:
+        return next((farm for farm in self.farms if farm.farm_id == self.farm_id), None)
+
+    def farm_by_id(self, farm_id: int) -> Farm | None:
+        return next((farm for farm in self.farms if farm.farm_id == farm_id), None)
 
     def _model_factory(self, model: type[BaseReader]):
         try:
